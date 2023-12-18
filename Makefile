@@ -18,7 +18,7 @@ DEP_DIR = dep
 INC_DIR = inc
 
 # Get all .cpp files in the root directory and its subdirectories
-SRC = $(wildcard *.cpp **/*.cpp **/*/*.cpp)
+SRC = $(wildcard *.cpp) $(wildcard **/*.cpp) $(wildcard **/*/*.cpp)
 
 # Generate a list of object files by replacing .cpp with .o
 OBJS = $(SRC:%.cpp=$(OBJ_DIR)/%.o)
@@ -29,14 +29,15 @@ GREEN='\033[32m'
 CURSIVE='\033[3m'
 GRAY='\033[2;37m'
 
-# Include dependency files
--include $(wildcard $(DEP_DIR)/*.d)
-INC_FLAGS = -I$(INC_DIR)
 
 # Default target (build the executable)# Default target (build the executable)
 all: $(NAME)
 
+# Include dependency files
+-include $(wildcard $(DEP_DIR)/*.d)
+INC_FLAGS = -I$(INC_DIR)
 # Link the object files to create the executable
+
 $(NAME): $(OBJS)
 	@$(CC) $(OBJS) $(CFLAGS) -o $(NAME)
 	@echo $(GREEN)"- Compiled -"$(NONE)
@@ -51,7 +52,6 @@ $(OBJ_DIR)/%.o: %.cpp
 # @echo "Dependencies for $*:" 	# uncomment this to debug your dependencies
 # @cat $(DEP_DIR)/$*.d			# uncomment this to debug your dependencies
 
-# Clean up object files and dependencies
 clean:
 	@$(RM) $(OBJS) $(OBJ_DIR) $(DEP_DIR) > /dev/null || true
 	@echo $(CURSIVE)$(GRAY) "     - Object files, dependencies, and $(NAME) removed" $(NONE)
@@ -66,4 +66,3 @@ re: fclean all
 
 # Define these targets as phony to avoid conflicts with file names
 .PHONY: all clean fclean re
-
