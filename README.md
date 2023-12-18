@@ -203,15 +203,15 @@ GREEN='\033[32m'
 CURSIVE='\033[3m'
 GRAY='\033[2;37m'
 
+# Default target (build the executable)# Default target (build the executable)
+all: $(NAME)
+
 # Include dependency files
 -include $(wildcard $(DEP_DIR)/*.d)
 
 # Include directory flags
 INC_FLAGS = -I$(INC_DIR)
 # -I$(INC_DIR): Specifies the -I flag with the include directory, ensuring that the compiler looks for header files in the specified directory.
-
-# Default target (build the executable)# Default target (build the executable)
-all: $(NAME)
 
 # Link the object files to create the executable
 $(NAME): $(OBJS)
