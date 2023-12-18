@@ -1,68 +1,51 @@
-# Define the name of the target executable
+# Variables
 NAME = form
 
-# Compiler and compiler flags
-CC = c++
+CC = c++										# Compiler and compiler flags
 CFLAGS = -Werror -Wall -Wextra -std=c++98
 DEPFLAGS = -MMD -MP
 
-# Command for removing files and directories
-RM = rm -rf
+RM = rm -rf										# Command for removing files and directories
+MKDIR = mkdir -p								# Command for creating directories
 
-# Command for creating directories
-MKDIR = mkdir -p
-
-# DIRECTORIES
-OBJ_DIR = obj
+OBJ_DIR = obj									# Directories 
 DEP_DIR = dep
 INC_DIR = inc
 
-# Get all .cpp files in the root directory and its subdirectories
-SRC = $(wildcard *.cpp) $(wildcard **/*.cpp) $(wildcard **/*/*.cpp)
-
-# Generate a list of object files by replacing .cpp with .o
+SRC = $(wildcard *.cpp **/*.cpp **/*/*.cpp) 
 OBJS = $(SRC:%.cpp=$(OBJ_DIR)/%.o)
 
-# Define colors for terminal output
-NONE='\033[0m'
+NONE='\033[0m'									# Define colors for terminal output
 GREEN='\033[32m'
 CURSIVE='\033[3m'
 GRAY='\033[2;37m'
 
+all: $(NAME)									# Default target (build the executable)
 
-# Default target (build the executable)# Default target (build the executable)
-all: $(NAME)
-
-# Include dependency files
--include $(wildcard $(DEP_DIR)/*.d)
+-include $(wildcard $(DEP_DIR)/*.d)				# Include dependency files
 INC_FLAGS = -I$(INC_DIR)
-# Link the object files to create the executable
 
 $(NAME): $(OBJS)
 	@$(CC) $(OBJS) $(CFLAGS) -o $(NAME)
 	@echo $(GREEN)"- Compiled -"$(NONE)
 
-# Build rule for each object file
-$(OBJ_DIR)/%.o: %.cpp
+$(OBJ_DIR)/%.o: %.cpp							# Build rule for each object file
 	@echo $(CURSIVE) "     - Building $<" $(NONE)
-	@$(MKDIR) $(OBJ_DIR)
+	@$(MKDIR) $(@D)
 	@$(MKDIR) $(DEP_DIR)
 	@$(CC) $(CFLAGS) $(DEPFLAGS) $(INC_FLAGS) -c $< -o $@
 	@mv $(OBJ_DIR)/$*.d $(DEP_DIR)/
-# @echo "Dependencies for $*:" 	# uncomment this to debug your dependencies
-# @cat $(DEP_DIR)/$*.d			# uncomment this to debug your dependencies
+# @echo "Dependencies for $*:" 					# uncomment this to debug your dependencies
+# @cat $(DEP_DIR)/$*.d							# uncomment this to debug your dependencies
 
 clean:
 	@$(RM) $(OBJS) $(OBJ_DIR) $(DEP_DIR) > /dev/null || true
 	@echo $(CURSIVE)$(GRAY) "     - Object files, dependencies, and $(NAME) removed" $(NONE)
 
-# Remove the executable
-fclean: clean
+fclean: clean									# Remove the executable
 	@$(RM) $(NAME) > /dev/null || true
 	@echo $(CURSIVE)$(GRAY) "     - $(NAME) removed" $(NONE)
 
-# Rebuild the project by cleaning and building again
-re: fclean all
+re: fclean all									# Rebuild the project by cleaning and building again
 
-# Define these targets as phony to avoid conflicts with file names
 .PHONY: all clean fclean re
