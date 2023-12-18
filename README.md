@@ -107,6 +107,10 @@ INC_FLAGS specifies the include directory for header files during compilation
 
 ```make
 @echo "Dependencies for $*:"
+@cat $(DEP_DIR)/$*.d
+@echo
+
+@echo "Dependencies for $*:"
 @: Suppresses the echoing of the command itself in the terminal. This is a common practice in Makefiles to make the output cleaner.
 
 echo "Dependencies for $*:": Prints a message to the console indicating that the following lines will show the dependencies for a specific target. $* is a special variable in Makefiles that represents the stem of the pattern rule. In this context, it represents the base name of the source file without the extension.
