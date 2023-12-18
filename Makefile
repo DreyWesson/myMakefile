@@ -13,7 +13,7 @@ DEP_DIR = dep
 INC_DIR = inc
 
 SRC = $(wildcard *.cpp **/*.cpp **/*/*.cpp) 
-OBJS = $(SRC:%.cpp=$(OBJ_DIR)/%.o)
+OBJS = $(SRC:%.cpp=$(OBJ_DIR)/%.o)				# substitution syntax
 
 NONE='\033[0m'									# Define colors for terminal output
 GREEN='\033[32m'
@@ -23,7 +23,7 @@ GRAY='\033[2;37m'
 all: $(NAME)									# Default target (build the executable)
 
 -include $(wildcard $(DEP_DIR)/*.d)				# Include dependency files
-INC_FLAGS = -I$(INC_DIR)
+INC_FLAGS = -I$(INC_DIR)						# look for header files
 
 $(NAME): $(OBJS)
 	@$(CC) $(OBJS) $(CFLAGS) -o $(NAME)
