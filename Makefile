@@ -13,9 +13,9 @@ RM = rm -rf
 MKDIR = mkdir -p
 
 # DIRECTORIES
-OBJ_DIR = obj # Object files directory
-DEP_DIR = dep # Dependency files directory
-INC_DIR = inc  # Include files directory - Specify the directory of your header files
+OBJ_DIR = obj
+DEP_DIR = dep
+INC_DIR = inc
 
 # Get all .cpp files in the root directory and its subdirectories
 SRC = $(wildcard *.cpp **/*.cpp **/*/*.cpp)
@@ -31,10 +31,7 @@ GRAY='\033[2;37m'
 
 # Include dependency files
 -include $(wildcard $(DEP_DIR)/*.d)
-
-# Include directory flags
 INC_FLAGS = -I$(INC_DIR)
-# -I$(INC_DIR): Specifies the -I flag with the include directory, ensuring that the compiler looks for header files in the specified directory.
 
 # Default target (build the executable)# Default target (build the executable)
 all: $(NAME)
@@ -57,7 +54,6 @@ $(OBJ_DIR)/%.o: %.cpp
 # Clean up object files and dependencies
 clean:
 	@$(RM) $(OBJS) $(OBJ_DIR) $(DEP_DIR) > /dev/null || true
-	@$(RM) $(NAME) > /dev/null || true
 	@echo $(CURSIVE)$(GRAY) "     - Object files, dependencies, and $(NAME) removed" $(NONE)
 
 # Remove the executable
@@ -70,3 +66,4 @@ re: fclean all
 
 # Define these targets as phony to avoid conflicts with file names
 .PHONY: all clean fclean re
+
