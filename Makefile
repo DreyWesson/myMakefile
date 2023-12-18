@@ -1,35 +1,34 @@
 # Variables
 NAME = form
 
-CC = c++										# Compiler and compiler flags
+CC = c++
 CFLAGS = -Werror -Wall -Wextra -std=c++98
 DEPFLAGS = -MMD -MP
 
-RM = rm -rf										# Command for removing files and directories
-MKDIR = mkdir -p								# Command for creating directories
-
-OBJ_DIR = obj									# Directories 
+RM = rm -rf
+MKDIR = mkdir -p
+OBJ_DIR = obj
 DEP_DIR = dep
 INC_DIR = inc
 
 SRC = $(wildcard *.cpp **/*.cpp **/*/*.cpp) 
-OBJS = $(SRC:%.cpp=$(OBJ_DIR)/%.o)				# substitution syntax
+OBJS = $(SRC:%.cpp=$(OBJ_DIR)/%.o)
 
-NONE='\033[0m'									# Define colors for terminal output
+NONE='\033[0m'
 GREEN='\033[32m'
 CURSIVE='\033[3m'
 GRAY='\033[2;37m'
 
-all: $(NAME)									# Default target (build the executable)
+all: $(NAME)
 
--include $(wildcard $(DEP_DIR)/*.d)				# Include dependency files
-INC_FLAGS = -I$(INC_DIR)						# look for header files
+-include $(wildcard $(DEP_DIR)/*.d)
+INC_FLAGS = -I$(INC_DIR)
 
 $(NAME): $(OBJS)
 	@$(CC) $(OBJS) $(CFLAGS) -o $(NAME)
 	@echo $(GREEN)"- Compiled -"$(NONE)
 
-$(OBJ_DIR)/%.o: %.cpp							# Build rule for each object file
+$(OBJ_DIR)/%.o: %.cpp
 	@echo $(CURSIVE) "     - Building $<" $(NONE)
 	@$(MKDIR) $(@D)
 	@$(MKDIR) $(DEP_DIR)
@@ -42,10 +41,10 @@ clean:
 	@$(RM) $(OBJS) $(OBJ_DIR) $(DEP_DIR) > /dev/null || true
 	@echo $(CURSIVE)$(GRAY) "     - Object files, dependencies, and $(NAME) removed" $(NONE)
 
-fclean: clean									# Remove the executable
+fclean: clean
 	@$(RM) $(NAME) > /dev/null || true
 	@echo $(CURSIVE)$(GRAY) "     - $(NAME) removed" $(NONE)
 
-re: fclean all									# Rebuild the project by cleaning and building again
+re: fclean all
 
 .PHONY: all clean fclean re
